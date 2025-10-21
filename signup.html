@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Gold Fellows English</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        // Theme loader script
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="font-brand flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Golden Fellows English</h1>
+        </div>
+        
+        <div class="bg-white/50 dark:bg-slate-800/50 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-xl border border-stone-200/50 dark:border-slate-700/50">
+            <h2 class="text-3xl font-bold text-center text-stone-900 dark:text-white mb-2">Create Your Account</h2>
+            <p class="text-center text-stone-500 dark:text-stone-400 mb-8">Begin your journey to fluency.</p>
+
+            <form id="signup-form" class="space-y-6">
+                <div>
+                    <label for="displayName" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Full Name</label>
+                    <input type="text" id="displayName" name="displayName" class="w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., Alex Ray" required>
+                </div>
+                <div>
+                    <label for="email" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Email Address</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="you@example.com" required>
+                </div>
+                <div>
+                    <label for="password" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" id="password" name="password" class="w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="•••••••• (min. 6 characters)" required minlength="6">
+                </div>
+
+                <div id="message-container" class="text-sm text-center h-5">
+                    <p id="error-message" class="text-red-600 dark:text-red-400 hidden"></p>
+                </div>
+
+                <div>
+                    <button typeD="submit" id="submit-btn" class="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold shadow-sm disabled:opacity-50">Create Account</button>
+                </div>
+            </form>
+
+            <p class="text-center text-sm text-stone-500 dark:text-stone-400 mt-6">
+                Already have an account? <a href="Login.html" class="font-semibold text-indigo-600 hover:underline dark:text-indigo-400">Log In</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script>
+
+    <script src="js/signup.js" type="module"></script>
+</body>
+</html>
