@@ -3,7 +3,7 @@
 // Import services from your central config file
 import { auth, db } from './firebase-config.js';
 
-// Import the specific Firebase functions you need *from the full CDN URL*
+// Import the specific Firebase functions *from the full CDN URL*
 import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
