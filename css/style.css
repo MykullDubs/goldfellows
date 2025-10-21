@@ -1,0 +1,52 @@
+/* In: /css/style.css */
+
+/* * 1. FONT DEFINITIONS
+ * We're using the established 'Source Serif Pro' for our brand's sophisticated feel.
+*/
+body {
+    font-family: 'Source Serif Pro', serif;
+}
+.font-brand { 
+    font-family: 'Source Serif Pro', serif; 
+}
+.font-typewriter { 
+    font-family: 'Special Elite', monospace; 
+}
+
+/* * 2. THEME & BACKGROUND
+ * This sets our default "smokey" light and dark mode backgrounds.
+*/
+body {
+    background-color: #F7F5F2; /* Warm off-white */
+    color: #36454F; /* Charcoal */
+}
+.dark body {
+    background-color: #0F172A; /* Slate 900 */
+    color: #cbd5e1; /* Slate 300 */
+}
+
+/* * 3. CUSTOM WIDGET STYLES
+ * We can move shared styles here. For example, the widget-card.
+*/
+.widget-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.widget-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px 0 rgba(13, 148, 136, 0.2);
+}
+.dark .widget-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 0 25px 0 rgba(20, 184, 166, 0.2);
+}
+
+/* * 4. ANIMATIONS
+ * A simple reusable animation for loading in dashboard widgets.
+*/
+@keyframes slideUpFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+    animation: slideUpFadeIn 0.6s ease-out forwards;
+    opacity: 0;
+}

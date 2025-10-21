@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Golden Fellows English</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Theme loader script
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <style>
+        body { 
+            font-family: 'Source Serif Pro', serif;
+            background-color: #F7F5F2;
+        }
+        .dark body {
+            background-color: #0F172A;
+        }
+        .font-brand { font-family: 'Source Serif Pro', serif; }
+
+        @keyframes slideUpFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: slideUpFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .widget-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .widget-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px 0 rgba(13, 148, 136, 0.2);
+        }
+        .dark .widget-card:hover {
+             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 0 25px 0 rgba(20, 184, 166, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-900 dark:text-gray-200 antialiased">
+
+    <header class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm border-b border-stone-200 dark:border-slate-800 sticky top-0 z-40">
+        <div class="container mx-auto px-4 sm:px-6 md:px-8 py-4 flex justify-between items-center">
+            <a href="dashboard.html" class="text-xl font-bold font-brand text-gray-900 dark:text-white">Golden Fellows English</a>
+            <div class="flex items-center gap-6">
+                 <a href="lesson-library.html" class="text-sm font-semibold hover:text-indigo-600 dark:hover:text-indigo-400">Content Library</a>
+                <div class="relative">
+                    <button id="profile-btn" class="flex items-center gap-2">
+                         <span id="user-email-nav" class="text-sm text-stone-600 dark:text-stone-300 hidden sm:block font-brand"></span>
+                        <div id="nav-avatar-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-stone-400 dark:text-stone-500" fill="currentColor" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
+                        </div>
+                    </button>
+                    <div id="profile-dropdown" class="hidden absolute font-brand right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-stone-200 dark:border-gray-700 overflow-hidden z-10">
+                        <a href="dashboard.html" class="block px-4 py-2 text-sm text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-gray-700">Dashboard</a>
+                        <a href="settings.html" class="block px-4 py-2 text-sm text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-gray-700">Settings</a>
+                        <div class="border-t border-stone-200 dark:border-gray-600"></div>
+                        <button id="logout-btn" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-stone-100 dark:hover:bg-gray-700">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl font-brand">
+        <header class="mb-12 animate-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white"><span id="time-greeting">Good morning</span>, <span id="user-name">User</span>!</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-3 text-lg">Here is your overview for Monday, September 29, 2025.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <div class="lg:col-span-2 space-y-8">
+                <section id="focus-widget-container" class="animate-in" style="animation-delay: 100ms;"></section>
+                
+                <section class="animate-in" style="animation-delay: 200ms;">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Explore</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <a href="game.html" class="widget-card block bg-white/80 dark:bg-slate-800/80 p-6 rounded-2xl shadow-md border border-stone-200/50 dark:border-slate-700/50 hover:shadow-xl transition flex flex-col items-center justify-center text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-teal-500 dark:text-teal-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">Play Speak-Tactics</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Challenge a friend and practice your speaking!</p>
+                        </a>
+                        <a href="lesson-library.html" class="widget-card block bg-white/80 dark:bg-slate-800/80 p-6 rounded-2xl shadow-md border border-stone-200/50 dark:border-slate-700/50 hover:shadow-xl transition flex flex-col items-center justify-center text-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 dark:text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg><h3 class="font-semibold text-gray-900 dark:text-white">Explore the Full Library</h3><p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Browse all lessons & guides</p></a>
+                    </div>
+                </section>
+            </div>
+            
+            <aside class="lg:col-span-1 space-y-8">
+                <section class="animate-in" style="animation-delay: 300ms;">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Upcoming Classes</h2>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 transition">
+                        <div id="schedule-widget-list" class="space-y-4"></div>
+                        <a href="schedule.html" class="block text-center mt-6 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">View Full Calendar →</a>
+                    </div>
+                </section>
+                <section class="animate-in" style="animation-delay: 400ms;">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Your Progress</h2>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-5 transition"><div><div class="flex justify-between items-end mb-1"><p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Lessons Completed</p><p class="font-bold text-lg">12 <span class="text-sm font-normal text-gray-400">/ 50</span></p></div><div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 24%"></div></div></div><div><div class="flex justify-between items-end mb-1"><p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Weekly Study Goal</p><p class="font-bold text-lg">4h <span class="text-sm font-normal text-gray-400">/ 5h</span></p></div><div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5"><div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%"></div></div></div></div>
+                </section>
+                <section class="animate-in" style="animation-delay: 500ms;">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Instructor Feedback</h2>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-4 transition"><a href="#" class="block p-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/40 dark:hover:bg-indigo-900/60"><p class="font-semibold text-indigo-900 dark:text-indigo-200">New feedback on: <b>A1 Speaking Task</b></p><p class="text-sm text-gray-500 dark:text-gray-400">Received: September 27, 2025</p></a><p class="text-center text-sm text-gray-500 dark:text-gray-400">No other new feedback.</p></div>
+                </section>
+                <section class="animate-in" style="animation-delay: 600ms;">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Latest Discussion</h2>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 transition">
+                        <h3 class="font-bold text-lg">What are the pros and cons of democracy?</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Join the conversation with your classmates and share your point of view.</p>
+                        <a href="forum-index.html" class="block text-center mt-4 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                            Join the Conversation →
+                        </a>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWpBbBLpq2fOnN5-EO3kmc0CHyG7DHXIM",
+            authDomain: "elearning-e83cb.firebaseapp.com",
+            projectId: "elearning-e83cb",
+            storageBucket: "elearning-e83cb.appspot.com",
+            messagingSenderId: "25473938624",
+            appId: "1:25473938624:web:5b56738933543f32a7e925"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const levelColors = { A1: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300', A2: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300', B1: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300', B2: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' };
+        
+        const events = [ 
+            { date: '2025-09-29', time: '5:00 PM', title: 'B2 Writing Feedback Session' }, 
+            { date: '2025-10-01', time: '10:00 AM', title: 'B1 Grammar Workshop' }
+        ];
+
+        function renderScheduleWidget() {
+            const container = document.getElementById('schedule-widget-list');
+            if (!container) return;
+            const today = new Date('2025-09-29T00:00:00'); // Set to Sept 29 for demo
+            today.setHours(0, 0, 0, 0);
+
+            const upcomingEvents = events.filter(event => new Date(event.date + 'T00:00:00') >= today).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+
+            if (upcomingEvents.length > 0) {
+                container.innerHTML = upcomingEvents.map(event => {
+                    const eventDate = new Date(event.date + 'T00:00:00');
+                    const isToday = eventDate.getTime() === today.getTime();
+                    const dateLabel = isToday ? 'Today' : eventDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                    return `<div class="flex items-start gap-4"><div class="flex-shrink-0 w-12 text-center bg-stone-100 dark:bg-slate-700 p-2 rounded-lg"><p class="font-bold text-sm">${isToday ? 'TODAY' : eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</p><p class="text-xl font-bold">${eventDate.getDate()}</p></div><div><p class="font-semibold">${event.title}</p><p class="text-sm text-gray-500 dark:text-gray-400">${dateLabel} at ${event.time}</p></div></div>`;
+                }).join('');
+            } else {
+                container.innerHTML = `<p class="text-center text-gray-500 dark:text-gray-400">No upcoming classes.</p>`;
+            }
+        }
+
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const logoutBtn = document.getElementById('logout-btn');
+        profileBtn.addEventListener('click', (e) => { e.stopPropagation(); profileDropdown.classList.toggle('hidden'); });
+        window.addEventListener('click', () => { profileDropdown.classList.add('hidden'); });
+        logoutBtn.addEventListener('click', () => { signOut(auth); });
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('user-email-nav').textContent = user.email;
+                if (user.photoURL) { document.getElementById('nav-avatar-container').innerHTML = `<img src="${user.photoURL}" class="w-8 h-8 rounded-full object-cover">`; }
+                
+                const hour = new Date().getHours();
+                const greetingEl = document.getElementById('time-greeting');
+                if (hour < 12) greetingEl.textContent = 'Good morning';
+                else if (hour < 18) greetingEl.textContent = 'Good afternoon';
+                else greetingEl.textContent = 'Good evening';
+
+                const focusContainer = document.getElementById('focus-widget-container');
+                let userData = {};
+
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(userDocRef);
+                    if (docSnap.exists()) {
+                        userData = docSnap.data();
+                        document.getElementById('user-name').textContent = userData.displayName || user.email.split('@')[0];
+                        
+                        if (userData.cefrLevel) {
+                            const level = userData.cefrLevel;
+                            const badge = document.getElementById('user-level-badge');
+                            badge.textContent = level;
+                            badge.className = `text-xs font-bold px-2 py-0.5 rounded-full ${levelColors[level]}`;
+                            badge.classList.remove('hidden');
+                        }
+                    } else {
+                        document.getElementById('user-name').textContent = user.email.split('@')[0];
+                    }
+
+                    if (userData.cefrLevel) {
+                        focusContainer.innerHTML = `
+                            <div class="widget-card block bg-gradient-to-br from-teal-500 to-emerald-600 dark:from-teal-600 dark:to-emerald-700 p-8 rounded-2xl shadow-xl border border-teal-400/50 dark:border-emerald-600/50 text-white transition">
+                                <h2 class="text-xl font-semibold mb-2">This Week's Class</h2>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-yellow-100/30 text-white">B1</span>
+                                <h3 class="text-3xl font-bold mt-2">Giving Advice with Modals</h3>
+                                <p class="text-teal-100 mt-2 max-w-lg">Learn to use 'should', 'must', and 'have to' for clear recommendations.</p>
+                                <a href="class-page.html" class="mt-6 inline-block bg-white text-teal-700 font-bold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Enter Classroom →</a>
+                            </div>`;
+                    } else {
+                        focusContainer.innerHTML = `
+                            <div class="widget-card bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-center text-white transition">
+                                <h2 class="text-3xl font-bold">Discover Your English Level</h2>
+                                <p class="mt-2 text-lg text-indigo-100 max-w-md mx-auto">Take our adaptive quiz to find your starting point.</p>
+                                <a href="level-finder.html" class="mt-6 inline-block bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Take the Quiz Now</a>
+                            </div>`;
+                    }
+                } catch (error) { console.error("Error fetching user data:", error); }
+
+                renderScheduleWidget();
+
+            } else { 
+                window.location.href = 'Login.html'; 
+            }
+        });
+    </script>
+</body>
+</html>
