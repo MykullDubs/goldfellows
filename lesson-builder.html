@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Builder - Instructor Portal</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        // Theme loader script
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="font-brand antialiased text-gray-900 dark:text-gray-200">
+
+    <header class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm border-b border-stone-200 dark:border-slate-800 sticky top-0 z-40">
+        <div class="container mx-auto px-4 sm:px-6 md:px-8 py-4 flex justify-between items-center">
+            <a href="instructor-dashboard.html" class="text-xl font-bold font-brand text-gray-900 dark:text-white">Gold Fellows English</a>
+            <span class="text-sm font-semibold text-teal-600 dark:text-teal-400">Lesson Builder</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
+
+        <header class="mb-10 animate-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Lesson Builder Tool</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-3 text-lg">Create new educational modules and resources for your students.</p>
+        </header>
+
+        <div class="widget-card bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-stone-200/50 dark:border-slate-700/50 animate-in" style="animation-delay: 100ms;">
+            
+            <form id="create-lesson-form" class="space-y-6">
+                
+                <h2 class="text-2xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">Lesson Metadata</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="lessonTitle" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Lesson Title</label>
+                        <input type="text" id="lessonTitle" name="lessonTitle" class="w-full p-3 border rounded-lg bg-transparent" placeholder="e.g., Using Phrasal Verbs in Finance" required>
+                    </div>
+                    <div>
+                        <label for="cefrLevel" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Target CEFR Level</label>
+                        <select id="cefrLevel" name="cefrLevel" class="w-full p-3 border rounded-lg bg-transparent" required>
+                            <option value="">Select Level</option>
+                            <option value="A1">A1 (Beginner)</option>
+                            <option value="A2">A2 (Elementary)</option>
+                            <option value="B1">B1 (Intermediate)</option>
+                            <option value="B2">B2 (Upper Intermediate)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lessonSummary" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Lesson Summary</label>
+                    <textarea id="lessonSummary" name="lessonSummary" rows="3" class="w-full p-3 border rounded-lg bg-transparent" placeholder="Briefly describe the key learning objective." required></textarea>
+                </div>
+
+                <h2 class="text-2xl font-semibold mb-4 pt-4 border-t border-stone-200 dark:border-slate-700 text-teal-600 dark:text-teal-400">Lesson Content (Markdown Supported)</h2>
+
+                <div>
+                    <label for="lessonContent" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Main Content</label>
+                    <textarea id="lessonContent" name="lessonContent" rows="12" class="w-full p-3 font-mono border rounded-lg bg-transparent" placeholder="Use Markdown to structure your lesson. Example: # Introduction, **Bold Text**, - List Item" required></textarea>
+                </div>
+                
+                <div id="form-message" class="text-sm text-red-500 h-4 text-center"></div>
+
+                <div>
+                    <button type="submit" id="create-lesson-btn" class="w-full px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold shadow-md disabled:opacity-50">Publish Lesson</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script>
+    
+    <script src="js/firebaseconfig.js" type="module"></script>
+    <script src="js/lesson-builder.js" type="module"></script>
+</body>
+</html>
