@@ -1,24 +1,18 @@
 // In: /js/login.js
+// IMPROVEMENT: Imports auth and db from the centralized config file.
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// NOTE: We replace the three generic imports below with a single import from the local file:
+// import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// --- Firebase Configuration ---
-// This config is from your previous files.
-const firebaseConfig = {
-    apiKey: "AIzaSyDWpBbBLpq2fOnN5-EO3kmc0CHyG7DHXIM",
-    authDomain: "elearning-e83cb.firebaseapp.com",
-    projectId: "elearning-e83cb",
-    storageBucket: "elearning-e83cb.appspot.com",
-    messagingSenderId: "25473938624",
-    appId: "1:25473938624:web:5b56738933543f32a7e925"
-};
+// Import initialized services from the central configuration (goldfellows project)
+import { auth, db } from './firebaseconfig.js'; 
+// Import specific functions we need
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// --- Initialize Firebase ---
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app); // Initialize Firestore
+// REMOVED: All hardcoded firebaseConfig and initializeApp calls, as they were using the wrong project ('elearning-e83cb')
 
 // --- Get DOM Elements ---
 const loginForm = document.getElementById('login-form');
@@ -46,11 +40,11 @@ loginForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'Logging In...';
 
     try {
-        // 1. Sign In with Firebase Auth
+        // 1. Sign In with Firebase Auth (using 'auth' imported from firebaseconfig.js)
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // 2. Get user document from Firestore to check role
+        // 2. Get user document from Firestore to check role (using 'db' imported from firebaseconfig.js)
         const userDocRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(userDocRef);
 
@@ -60,18 +54,18 @@ loginForm.addEventListener('submit', async (e) => {
             const userData = docSnap.data();
             const userRole = userData.role;
 
+            console.log(`Login successful. User role: ${userRole}`); // Helpful for debugging
+
             if (userRole === 'instructor') {
                 redirectUrl = '/instructor-dashboard.html';
             }
-            // For students ('role: "student"'), the default URL is used.
 
             // 3. Success! Redirect to the appropriate dashboard.
             window.location.href = redirectUrl;
         } else {
             // This is a safety catch: Auth user exists, but no Firestore doc.
             showError("User profile data not found. Please contact support.");
-            // OPTIONAL: Force sign out here if you want to prevent them from staying logged in without a profile.
-            // await auth.signOut();
+            // If the profile is missing, you might want to sign them out here.
         }
 
     } catch (error) {
@@ -86,6 +80,8 @@ loginForm.addEventListener('submit', async (e) => {
             message = 'Invalid email or password. Please try again.';
         } else if (error.code === 'auth/network-request-failed') {
              message = 'Network error. Check your connection.';
+        } else if (error.code === 'auth/too-many-requests') {
+             message = 'Access temporarily blocked due to too many failed login attempts. Try again later.';
         }
 
         showError(message);
