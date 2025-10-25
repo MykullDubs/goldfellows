@@ -1,18 +1,10 @@
 // In: /js/login.js
-// IMPROVEMENT: Imports auth and db from the centralized config file.
 
-// NOTE: We replace the three generic imports below with a single import from the local file:
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-// import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// Import initialized services from the central configuration (goldfellows project)
+// 🚨 CRITICAL FIX: Ensure file name case exactly matches the filesystem.
+// Assuming your file is exactly named 'firebaseconfig.js' (all lowercase)
 import { auth, db } from './firebaseconfig.js'; 
-// Import specific functions we need
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// REMOVED: All hardcoded firebaseConfig and initializeApp calls, as they were using the wrong project ('elearning-e83cb')
 
 // --- Get DOM Elements ---
 const loginForm = document.getElementById('login-form');
@@ -40,11 +32,11 @@ loginForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'Logging In...';
 
     try {
-        // 1. Sign In with Firebase Auth (using 'auth' imported from firebaseconfig.js)
+        // 1. Sign In with Firebase Auth (uses 'auth' from firebaseconfig.js)
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // 2. Get user document from Firestore to check role (using 'db' imported from firebaseconfig.js)
+        // 2. Get user document from Firestore to check role (uses 'db' from firebaseconfig.js)
         const userDocRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(userDocRef);
 
@@ -54,7 +46,7 @@ loginForm.addEventListener('submit', async (e) => {
             const userData = docSnap.data();
             const userRole = userData.role;
 
-            console.log(`Login successful. User role: ${userRole}`); // Helpful for debugging
+            console.log(`Login successful. User role: ${userRole}`); 
 
             if (userRole === 'instructor') {
                 redirectUrl = '/instructor-dashboard.html';
@@ -63,9 +55,8 @@ loginForm.addEventListener('submit', async (e) => {
             // 3. Success! Redirect to the appropriate dashboard.
             window.location.href = redirectUrl;
         } else {
-            // This is a safety catch: Auth user exists, but no Firestore doc.
+            // Safety catch for existing Auth users without a Firestore profile
             showError("User profile data not found. Please contact support.");
-            // If the profile is missing, you might want to sign them out here.
         }
 
     } catch (error) {
