@@ -6,51 +6,23 @@
     <title>Dashboard - Golden Fellows English</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="css/style.css">
+
     <script>
-        // Theme loader script
+        // Theme loader script (Must be inline to prevent flash of unstyled content)
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
     </script>
-    
-    <style>
-        body { 
-            font-family: 'Source Serif Pro', serif;
-            background-color: #F7F5F2;
-        }
-        .dark body {
-            background-color: #0F172A;
-        }
-        .font-brand { font-family: 'Source Serif Pro', serif; }
-
-        @keyframes slideUpFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-in {
-            animation: slideUpFadeIn 0.6s ease-out forwards;
-            opacity: 0;
-        }
-
-        .widget-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .widget-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px 0 rgba(13, 148, 136, 0.2);
-        }
-        .dark .widget-card:hover {
-             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 0 25px 0 rgba(20, 184, 166, 0.2);
-        }
-    </style>
 </head>
-<body class="text-gray-900 dark:text-gray-200 antialiased">
+<body class="text-gray-900 dark:text-gray-200 antialiased font-brand">
 
     <header class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm border-b border-stone-200 dark:border-slate-800 sticky top-0 z-40">
         <div class="container mx-auto px-4 sm:px-6 md:px-8 py-4 flex justify-between items-center">
@@ -72,13 +44,12 @@
                     </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <main class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl font-brand">
         <header class="mb-12 animate-in">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white"><span id="time-greeting">Good morning</span>, <span id="user-name">User</span>!</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-3 text-lg">Here is your overview for Monday, September 29, 2025.</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white"><span id="time-greeting">Good morning</span>, <span id="user-name">User</span><span id="user-level-badge" class="ml-3 text-xs font-bold px-2 py-0.5 rounded-full hidden"></span>!</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-3 text-lg">Here is your overview for today.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -107,14 +78,42 @@
                         <a href="schedule.html" class="block text-center mt-6 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">View Full Calendar →</a>
                     </div>
                 </section>
+                
                 <section class="animate-in" style="animation-delay: 400ms;">
                     <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Your Progress</h2>
-                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-5 transition"><div><div class="flex justify-between items-end mb-1"><p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Lessons Completed</p><p class="font-bold text-lg">12 <span class="text-sm font-normal text-gray-400">/ 50</span></p></div><div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 24%"></div></div></div><div><div class="flex justify-between items-end mb-1"><p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Weekly Study Goal</p><p class="font-bold text-lg">4h <span class="text-sm font-normal text-gray-400">/ 5h</span></p></div><div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5"><div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%"></div></div></div></div>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-5 transition">
+                        <div>
+                            <div class="flex justify-between items-end mb-1">
+                                <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Lessons Completed</p>
+                                <p class="font-bold text-lg">12 <span class="text-sm font-normal text-gray-400">/ 50</span></p>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5">
+                                <div class="bg-green-500 h-2.5 rounded-full" style="width: 24%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-1">
+                                <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Weekly Study Goal</p>
+                                <p class="font-bold text-lg">4h <span class="text-sm font-normal text-gray-400">/ 5h</span></p>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5">
+                                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
+                
                 <section class="animate-in" style="animation-delay: 500ms;">
                     <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Instructor Feedback</h2>
-                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-4 transition"><a href="#" class="block p-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/40 dark:hover:bg-indigo-900/60"><p class="font-semibold text-indigo-900 dark:text-indigo-200">New feedback on: <b>A1 Speaking Task</b></p><p class="text-sm text-gray-500 dark:text-gray-400">Received: September 27, 2025</p></a><p class="text-center text-sm text-gray-500 dark:text-gray-400">No other new feedback.</p></div>
+                    <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 space-y-4 transition">
+                        <a href="#" class="block p-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/40 dark:hover:bg-indigo-900/60">
+                            <p class="font-semibold text-indigo-900 dark:text-indigo-200">New feedback on: <b>A1 Speaking Task</b></p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Received: September 27, 2025</p>
+                        </a>
+                        <p class="text-center text-sm text-gray-500 dark:text-gray-400">No other new feedback.</p>
+                    </div>
                 </section>
+                
                 <section class="animate-in" style="animation-delay: 600ms;">
                     <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Latest Discussion</h2>
                     <div class="widget-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-stone-200 dark:border-slate-700 transition">
@@ -130,111 +129,157 @@
     </main>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        // Import all required Firebase modules
+        import { auth, db } from './js/firebaseconfig.js'; // IMPROVEMENT: Imported centralized config
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDWpBbBLpq2fOnN5-EO3kmc0CHyG7DHXIM",
-            authDomain: "elearning-e83cb.firebaseapp.com",
-            projectId: "elearning-e83cb",
-            storageBucket: "elearning-e83cb.appspot.com",
-            messagingSenderId: "25473938624",
-            appId: "1:25473938624:web:5b56738933543f32a7e925"
+        // --- Configuration & Mock Data ---
+        const levelColors = { 
+            A1: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300', 
+            A2: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300', 
+            B1: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300', 
+            B2: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' 
         };
         
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        const levelColors = { A1: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300', A2: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300', B1: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300', B2: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' };
-        
+        // Mock data for Upcoming Classes widget
         const events = [ 
             { date: '2025-09-29', time: '5:00 PM', title: 'B2 Writing Feedback Session' }, 
-            { date: '2025-10-01', time: '10:00 AM', title: 'B1 Grammar Workshop' }
+            { date: '2025-10-01', time: '10:00 AM', title: 'B1 Grammar Workshop' },
+            { date: '2025-10-03', time: '7:30 PM', title: 'A2 Pronunciation Clinic' }
         ];
+
+        // --- Core Functions ---
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingEl = document.getElementById('time-greeting');
+            if (hour < 12) greetingEl.textContent = 'Good morning';
+            else if (hour < 18) greetingEl.textContent = 'Good afternoon';
+            else greetingEl.textContent = 'Good evening';
+        }
 
         function renderScheduleWidget() {
             const container = document.getElementById('schedule-widget-list');
             if (!container) return;
-            const today = new Date('2025-09-29T00:00:00'); // Set to Sept 29 for demo
+            // Set to Sept 29 for consistent demo display, but keep date formatting
+            const today = new Date('2025-09-29T00:00:00'); 
             today.setHours(0, 0, 0, 0);
 
-            const upcomingEvents = events.filter(event => new Date(event.date + 'T00:00:00') >= today).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+            const upcomingEvents = events
+                .filter(event => new Date(event.date + 'T00:00:00') >= today)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 3);
 
             if (upcomingEvents.length > 0) {
                 container.innerHTML = upcomingEvents.map(event => {
                     const eventDate = new Date(event.date + 'T00:00:00');
                     const isToday = eventDate.getTime() === today.getTime();
                     const dateLabel = isToday ? 'Today' : eventDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                    return `<div class="flex items-start gap-4"><div class="flex-shrink-0 w-12 text-center bg-stone-100 dark:bg-slate-700 p-2 rounded-lg"><p class="font-bold text-sm">${isToday ? 'TODAY' : eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</p><p class="text-xl font-bold">${eventDate.getDate()}</p></div><div><p class="font-semibold">${event.title}</p><p class="text-sm text-gray-500 dark:text-gray-400">${dateLabel} at ${event.time}</p></div></div>`;
+                    
+                    return `<div class="flex items-start gap-4 widget-card p-2 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700/50">
+                        <div class="flex-shrink-0 w-12 text-center bg-stone-100 dark:bg-slate-700 p-2 rounded-lg">
+                            <p class="font-bold text-sm">${isToday ? 'TODAY' : eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</p>
+                            <p class="text-xl font-bold">${eventDate.getDate()}</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">${event.title}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">${dateLabel} at ${event.time}</p>
+                        </div>
+                    </div>`;
                 }).join('');
             } else {
                 container.innerHTML = `<p class="text-center text-gray-500 dark:text-gray-400">No upcoming classes.</p>`;
             }
         }
+        
+        async function renderFocusWidget(userData, userName) {
+            const focusContainer = document.getElementById('focus-widget-container');
 
-        const profileBtn = document.getElementById('profile-btn');
-        const profileDropdown = document.getElementById('profile-dropdown');
-        const logoutBtn = document.getElementById('logout-btn');
-        profileBtn.addEventListener('click', (e) => { e.stopPropagation(); profileDropdown.classList.toggle('hidden'); });
-        window.addEventListener('click', () => { profileDropdown.classList.add('hidden'); });
-        logoutBtn.addEventListener('click', () => { signOut(auth); });
+            if (userData.cefrLevel) {
+                const level = userData.cefrLevel;
+                const badge = document.getElementById('user-level-badge');
+                badge.textContent = level;
+                badge.className = `ml-3 text-xs font-bold px-2 py-0.5 rounded-full ${levelColors[level]}`;
+                badge.classList.remove('hidden');
+
+                // Render the 'Current Class' widget for students who have found their level
+                focusContainer.innerHTML = `
+                    <div class="widget-card block bg-gradient-to-br from-teal-500 to-emerald-600 dark:from-teal-600 dark:to-emerald-700 p-8 rounded-2xl shadow-xl border border-teal-400/50 dark:border-emerald-600/50 text-white transition">
+                        <h2 class="text-xl font-semibold mb-2">This Week's Focus</h2>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full bg-yellow-100/30 text-white">${level}</span>
+                        <h3 class="text-3xl font-bold mt-2">Giving Advice with Modals</h3>
+                        <p class="text-teal-100 mt-2 max-w-lg">Learn to use 'should', 'must', and 'have to' for clear recommendations.</p>
+                        <a href="class-page.html" class="mt-6 inline-block bg-white text-teal-700 font-bold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Enter Classroom →</a>
+                    </div>`;
+            } else {
+                // Render the 'Level Finder' call-to-action for new users
+                focusContainer.innerHTML = `
+                    <div class="widget-card bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-center text-white transition">
+                        <h2 class="text-3xl font-bold">Discover Your English Level</h2>
+                        <p class="mt-2 text-lg text-indigo-100 max-w-md mx-auto">Take our adaptive quiz to find your starting point.</p>
+                        <a href="level-finder.html" class="mt-6 inline-block bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Take the Quiz Now</a>
+                    </div>`;
+            }
+        }
+        
+        function setupNavigation(user) {
+            document.getElementById('user-email-nav').textContent = user.email;
+            if (user.photoURL) { 
+                document.getElementById('nav-avatar-container').innerHTML = `<img src="${user.photoURL}" class="w-8 h-8 rounded-full object-cover">`; 
+            }
+            
+            const profileBtn = document.getElementById('profile-btn');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            profileBtn.addEventListener('click', (e) => { 
+                e.stopPropagation(); 
+                profileDropdown.classList.toggle('hidden'); 
+            });
+            
+            window.addEventListener('click', () => { 
+                profileDropdown.classList.add('hidden'); 
+            });
+            
+            logoutBtn.addEventListener('click', () => { 
+                signOut(auth); 
+            });
+        }
+
+        // --- Main Execution Flow ---
         
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                document.getElementById('user-email-nav').textContent = user.email;
-                if (user.photoURL) { document.getElementById('nav-avatar-container').innerHTML = `<img src="${user.photoURL}" class="w-8 h-8 rounded-full object-cover">`; }
-                
-                const hour = new Date().getHours();
-                const greetingEl = document.getElementById('time-greeting');
-                if (hour < 12) greetingEl.textContent = 'Good morning';
-                else if (hour < 18) greetingEl.textContent = 'Good afternoon';
-                else greetingEl.textContent = 'Good evening';
+                setupNavigation(user);
+                updateGreeting();
+                renderScheduleWidget();
 
-                const focusContainer = document.getElementById('focus-widget-container');
                 let userData = {};
-
                 try {
                     const userDocRef = doc(db, "users", user.uid);
                     const docSnap = await getDoc(userDocRef);
+                    
+                    let userName = user.email.split('@')[0];
                     if (docSnap.exists()) {
                         userData = docSnap.data();
-                        document.getElementById('user-name').textContent = userData.displayName || user.email.split('@')[0];
-                        
-                        if (userData.cefrLevel) {
-                            const level = userData.cefrLevel;
-                            const badge = document.getElementById('user-level-badge');
-                            badge.textContent = level;
-                            badge.className = `text-xs font-bold px-2 py-0.5 rounded-full ${levelColors[level]}`;
-                            badge.classList.remove('hidden');
-                        }
-                    } else {
-                        document.getElementById('user-name').textContent = user.email.split('@')[0];
+                        userName = userData.displayName || userName;
                     }
+                    
+                    document.getElementById('user-name').textContent = userName;
+                    
+                    // Render the main widget based on the user's CEFR level
+                    renderFocusWidget(userData, userName);
 
-                    if (userData.cefrLevel) {
-                        focusContainer.innerHTML = `
-                            <div class="widget-card block bg-gradient-to-br from-teal-500 to-emerald-600 dark:from-teal-600 dark:to-emerald-700 p-8 rounded-2xl shadow-xl border border-teal-400/50 dark:border-emerald-600/50 text-white transition">
-                                <h2 class="text-xl font-semibold mb-2">This Week's Class</h2>
-                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-yellow-100/30 text-white">B1</span>
-                                <h3 class="text-3xl font-bold mt-2">Giving Advice with Modals</h3>
-                                <p class="text-teal-100 mt-2 max-w-lg">Learn to use 'should', 'must', and 'have to' for clear recommendations.</p>
-                                <a href="class-page.html" class="mt-6 inline-block bg-white text-teal-700 font-bold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Enter Classroom →</a>
-                            </div>`;
-                    } else {
-                        focusContainer.innerHTML = `
-                            <div class="widget-card bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-center text-white transition">
-                                <h2 class="text-3xl font-bold">Discover Your English Level</h2>
-                                <p class="mt-2 text-lg text-indigo-100 max-w-md mx-auto">Take our adaptive quiz to find your starting point.</p>
-                                <a href="level-finder.html" class="mt-6 inline-block bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-sm hover:scale-105 transition-transform">Take the Quiz Now</a>
-                            </div>`;
-                    }
-                } catch (error) { console.error("Error fetching user data:", error); }
-
-                renderScheduleWidget();
+                } catch (error) { 
+                    console.error("Error fetching user data or rendering widgets:", error);
+                    // Fallback to basic dashboard if data fetch fails
+                    document.getElementById('user-name').textContent = 'Fellow';
+                    renderFocusWidget({}, 'Fellow');
+                }
 
             } else { 
+                // No user is logged in, redirect to login
                 window.location.href = 'Login.html'; 
             }
         });
