@@ -4,23 +4,20 @@ import { auth, db } from './firebaseconfig.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// --- Configuration: The Escalating Difficulty Quiz Data ---
+// --- Configuration: The Vocabulary Match Data (Escalating Difficulty) ---
+// Note: While the task itself is matching, the vocabulary difficulty implies the level.
 const QUIZ_DATA = [
-    // A1/A2: Basic articles, possessives, simple present/past
-    { id: 1, level: 'A1', sentence: 'She __ to school every morning.', answer: 'goes', options: ['goes', 'going', 'go'] },
-    { id: 2, level: 'A2', sentence: 'We __ the film last night; it was good.', answer: 'watched', options: ['watch', 'watching', 'watched'] },
-    { id: 3, level: 'A2', sentence: 'I need __ buy some new shoes.', answer: 'to', options: ['too', 'to', 'for'] },
-    
-    // B1: Conditionals, modals, present perfect
-    { id: 4, level: 'B1', sentence: 'If I __ richer, I would travel the world.', answer: 'were', options: ['am', 'was', 'were'] },
-    { id: 5, level: 'B1', sentence: 'They __ finished the report yet.', answer: "haven't", options: ["don't", "haven't", "hasn't"] },
-    { id: 6, 'level': 'B1', sentence: 'This report must __ finished by Friday.', answer: 'be', options: ['is', 'be', 'done'] },
-    
-    // B2: Passive voice, advanced prepositions, reported speech, phrasal verbs
-    { id: 7, level: 'B2', sentence: 'The concert __ postponed due to the heavy rain.', answer: 'was', options: ['is', 'was', 'were'] },
-    { id: 8, level: 'B2', sentence: 'She apologized __ arriving late to the meeting.', answer: 'for', options: ['on', 'to', 'for'] },
-    { id: 9, level: 'B2', sentence: 'The manager suggested __ down the project timeline.', answer: 'cutting', options: ['cut', 'to cut', 'cutting'] }
+    // A2/B1: Common verbs/adjectives
+    { id: 1, level: 'A2', definition: 'To start or begin an activity or conversation.', answer: 'INITIATE' },
+    { id: 2, level: 'B1', definition: 'The capacity to have an effect on the character, development, or behavior of someone or something.', answer: 'INFLUENCE' },
+    { id: 3, level: 'B1', definition: 'The quality of being accurate, truthful, or reliable.', answer: 'INTEGRITY' },
+    // B2: More formal/academic vocabulary
+    { id: 4, level: 'B2', definition: 'To solve a problem or resolve a difficulty.', answer: 'RESOLVE' },
+    { id: 5, level: 'B2', definition: 'Existing or in effect, but not officially stated or recognized.', answer: 'TACIT' }
 ];
+
+// Combine all answers to create the word bank
+const WORD_BANK_OPTIONS = QUIZ_DATA.map(q => q.answer);
 
 // --- DOM Elements ---
 const quizContainer = document.getElementById('quiz-container');
@@ -32,50 +29,45 @@ const loadingSpinner = document.getElementById('loading-spinner');
 
 // --- State ---
 let currentAuthUser = null;
-let allOptions = []; // Combined unique options from all questions
-
-// --- Drag and Drop Logic (Client-Side State Management) ---
-
-// Stores the word currently being dragged
 let draggedItem = null; 
-
 // Stores the student's answers (Key: questionId, Value: wordText)
 let studentAnswers = {}; 
 
-function initializeDragAndDrop() {
-    // Collect all unique options for the word bank
-    allOptions = [...new Set(QUIZ_DATA.flatMap(q => q.options))]; 
+// --- Core Logic ---
 
-    // Create question HTML and populate options
+function initializeDragAndDrop() {
+    // 1. Create Question HTML (Definitions)
+    quizContainer.innerHTML = ''; // Clear spinner
     QUIZ_DATA.forEach(q => {
         const questionEl = document.createElement('div');
-        questionEl.className = 'p-4 border-l-4 border-indigo-400 bg-stone-50 dark:bg-slate-900 rounded-md shadow-sm';
-        
-        // Find the blank spot
-        const parts = q.sentence.split('__');
+        questionEl.className = 'grid grid-cols-5 gap-4 items-center p-4 bg-stone-50 dark:bg-slate-900 rounded-md shadow-sm';
         
         questionEl.innerHTML = `
-            <p class="text-sm text-indigo-500 font-semibold mb-1">${q.level} Level</p>
-            <p class="text-lg text-gray-700 dark:text-gray-300">
-                ${parts[0]}
-                <span data-question-id="${q.id}" class="drag-area inline-flex justify-center items-center w-24 h-8 px-2 align-middle text-base font-typewriter"></span>
-                ${parts[1]}
-            </p>
+            <div class="col-span-3 text-gray-700 dark:text-gray-300">
+                <p class="text-sm text-indigo-500 font-semibold mb-1">${q.level} Vocabulary</p>
+                <p class="text-base">${q.definition}</p>
+            </div>
+            <div class="col-span-2">
+                <span data-question-id="${q.id}" class="drag-area inline-flex w-full h-10 px-2 rounded-lg text-base font-semibold"></span>
+            </div>
         `;
         quizContainer.appendChild(questionEl);
     });
 
-    // Populate the Word Bank
-    allOptions.forEach((option, index) => {
+    // 2. Populate the Word Bank (Words)
+    // Shuffle the options before displaying
+    const shuffledOptions = [...WORD_BANK_OPTIONS].sort(() => Math.random() - 0.5);
+    
+    shuffledOptions.forEach((option, index) => {
         const wordEl = document.createElement('span');
         wordEl.textContent = option;
-        wordEl.id = `option-${index}`;
+        wordEl.id = `word-option-${index}`;
         wordEl.draggable = true;
         wordEl.className = 'draggable bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300 font-semibold px-4 py-2 rounded-full shadow-sm transition hover:shadow-md';
         wordBank.appendChild(wordEl);
     });
     
-    // Add event listeners
+    // 3. Add Drag/Drop Event Listeners
     document.querySelectorAll('.draggable').forEach(item => {
         item.addEventListener('dragstart', handleDragStart);
     });
@@ -92,13 +84,12 @@ function initializeDragAndDrop() {
 
 function handleDragStart(e) {
     draggedItem = e.target;
-    // Store the ID of the dragged item
     e.dataTransfer.setData('text/plain', e.target.id);
     setTimeout(() => e.target.classList.add('opacity-40'), 0);
 }
 
 function handleDragOver(e) {
-    e.preventDefault(); // Necessary to allow dropping
+    e.preventDefault(); 
     e.currentTarget.classList.add('hovering');
 }
 
@@ -118,13 +109,13 @@ function handleDrop(e) {
     const dropArea = e.currentTarget;
     const questionId = dropArea.getAttribute('data-question-id');
     
-    // Check if the drop area already has a word
+    // Return existing word to the word bank if the drop area is already full
     if (dropArea.children.length > 0) {
-        // Return the existing word to the word bank
         const existingWord = dropArea.children[0];
         existingWord.classList.remove('dragged-item', 'opacity-40');
         existingWord.classList.add('draggable');
         wordBank.appendChild(existingWord);
+        delete studentAnswers[questionId]; // Clear old answer from state
     }
     
     // Move the new dragged item into the drop area
@@ -137,14 +128,15 @@ function handleDrop(e) {
         studentAnswers[questionId] = draggedItem.textContent.trim();
         checkSubmitButton();
     }
+    draggedItem = null;
 }
 
 function checkSubmitButton() {
-    // Check if all questions have an answer
+    // Check if all 5 definitions have been matched
     const answeredCount = Object.keys(studentAnswers).length;
     if (answeredCount === QUIZ_DATA.length) {
         submitQuizBtn.disabled = false;
-        submitQuizBtn.textContent = 'Submit Assessment (All Answers Placed)';
+        submitQuizBtn.textContent = 'Submit Assessment (All Matches Placed)';
     } else {
         submitQuizBtn.disabled = true;
         submitQuizBtn.textContent = `Place ${QUIZ_DATA.length - answeredCount} words to submit`;
@@ -158,42 +150,34 @@ function calculateScore() {
     QUIZ_DATA.forEach(q => {
         if (studentAnswers[q.id] === q.answer) {
             score++;
-            // Optional: Mark correct answers visually
-            document.querySelector(`[data-question-id="${q.id}"]`).classList.add('correct');
+            // Optional: Visually confirm correct answer in the drag area
+            document.querySelector(`[data-question-id="${q.id}"]`).classList.add('border-green-500');
         } else {
-            // Optional: Mark incorrect answers visually
-            document.querySelector(`[data-question-id="${q.id}"]`).classList.add('incorrect');
+            document.querySelector(`[data-question-id="${q.id}"]`).classList.add('border-red-500');
         }
     });
     return score;
 }
 
 function determineLevel(score) {
-    // Logic based on passing threshold (e.g., 66% pass rate per level)
-    // A1/A2: Q1-3 (3 questions)
-    // B1: Q4-6 (3 questions)
-    // B2: Q7-9 (3 questions)
-    
-    const results = {
-        score: score,
-        level: 'A1',
-        message: 'Great start! Your score suggests a solid foundational A1/A2 level. You\'ll begin with Core Fundamentals.'
-    };
+    // 5 Questions total. Score determines estimated level.
+    let level = 'A1';
+    let message = 'Welcome aboard! Your vocabulary is foundational (A1). We will build your word bank from the very basics.';
 
-    if (score >= 4) { // Passed A1/A2 portion
-        results.level = 'B1';
-        results.message = 'Excellent job! Your grammar is strong enough for everyday B1 conversations and writing. You\'ll start with Intermediate Structures.';
+    if (score >= 2) { // Passed basic A2/B1 vocabulary
+        level = 'A2';
+        message = 'Good recognition! Your vocabulary is strong enough for simple conversations (A2). We will start with basic fluency builders.';
     }
-    if (score >= 7) { // Passed B1 portion
-        results.level = 'B2';
-        results.message = 'Outstanding! You demonstrated mastery of complex B2 grammar. You\'re ready for Advanced Fluency and professional tasks.';
+    if (score >= 3) { // Passed A2/B1 vocabulary well
+        level = 'B1';
+        message = 'Excellent job! You correctly identified most B1/B2 words. You are ready for Intermediate structures (B1).';
     }
-    if (score < 3) {
-        results.level = 'A1';
-        results.message = 'Welcome aboard! Your score suggests you are at the beginning of your journey. We will start with the very basics (A1).';
+    if (score >= 5) { // Perfect score, strong indication of B2 ability
+        level = 'B2';
+        message = 'Outstanding! Your near-perfect score demonstrates high-level vocabulary mastery. You\'re ready for Advanced Fluency (B2) and complex tasks.';
     }
 
-    return results;
+    return { score, level, message };
 }
 
 submitQuizBtn.addEventListener('click', async () => {
@@ -210,24 +194,22 @@ submitQuizBtn.addEventListener('click', async () => {
         const userDocRef = doc(db, "users", currentAuthUser.uid);
         await setDoc(userDocRef, {
             cefrLevel: result.level, // Store the determined level
-            initialScore: finalScore,
+            initialAssessment: finalScore,
             lastAssessmentDate: new Date(),
-        }, { merge: true }); // Use merge: true to avoid overwriting existing fields like displayName, email, role.
+        }, { merge: true });
 
         // 2. Display results
         estimatedLevelMessage.innerHTML = `<span class="font-bold text-4xl">${result.level}</span><br>${result.message}`;
         
         // Hide quiz, show results
-        document.getElementById('quiz-container').classList.add('hidden');
-        document.getElementById('word-bank-container').classList.add('hidden');
-        submitQuizBtn.classList.add('hidden');
+        quizContainer.parentNode.classList.add('hidden'); // Hides the quiz card content
         resultsContainer.classList.remove('hidden');
 
     } catch (error) {
         console.error("Submission failed:", error);
         submitQuizBtn.textContent = 'Error: Failed to save results.';
         submitQuizBtn.disabled = false;
-        alert('There was an error saving your results to the server. Please check your network and try again.');
+        alert('There was an error saving your results to the server. Please check your network and try again. Error: ' + error.message);
     }
 });
 
