@@ -1,7 +1,7 @@
 // In: /js/signup.js
 
 // Import services from your central config file
-import { auth, db } from './firebase-config.js';
+import { auth, db } from './js/firebaseconfig.js';
 
 // Import the specific Firebase functions *from the full CDN URL*
 import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -67,3 +67,4 @@ signupForm.addEventListener('submit', async (e) => {
         submitBtn.textContent = 'Create Account';
     }
 });
+
