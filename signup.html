@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Gold Fellows English</title>
+    <title>Sign Up - Golden Fellows English</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
 </head>
 <body class="font-brand flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md mx-auto">
+    <div class="w-full max-w-md mx-auto animate-in" style="animation-delay: 100ms;">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Golden Fellows English</h1>
         </div>
@@ -60,9 +60,12 @@
             </p>
         </div>
     </div>
-
-    <script src="js/firebase-config.js" type="module"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script>
+    
+    <script src="js/firebaseconfig.js" type="module"></script>
     <script src="js/signup.js" type="module"></script>
 </body>
 </html>
-
