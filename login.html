@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - Golden Fellows English</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        // Theme loader script (Must be inline to prevent flash of unstyled content)
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="font-brand flex items-center justify-center min-h-screen p-4 antialiased text-gray-900 dark:text-gray-200">
+
+    <div class="w-full max-w-md mx-auto animate-in" style="animation-delay: 100ms;">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Golden Fellows English</h1>
+        </div>
+        
+        <div class="bg-white/50 dark:bg-slate-800/50 backdrop-blur-lg p-8 sm:p-10 rounded-2xl shadow-xl border border-stone-200/50 dark:border-slate-700/50">
+            <h2 class="text-3xl font-bold text-center text-stone-900 dark:text-white mb-2">Welcome Back! 📖</h2>
+            <p class="text-center text-stone-500 dark:text-stone-400 mb-8">Log in to continue your journey to fluency.</p>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Email Address</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="you@example.com" required>
+                </div>
+                <div>
+                    <label for="password" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" id="password" name="password" class="w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="••••••••" required>
+                </div>
+
+                <div id="message-container" class="text-sm text-center h-5">
+                    <p id="error-message" class="text-red-600 dark:text-red-400 hidden font-typewriter"></p>
+                </div>
+
+                <div>
+                    <button type="submit" id="submit-btn" class="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold shadow-md disabled:opacity-50">Log In</button>
+                </div>
+            </form>
+
+            <p class="text-center text-sm text-stone-500 dark:text-stone-400 mt-6">
+                Don't have an account? <a href="signup.html" class="font-semibold text-indigo-600 hover:underline dark:text-indigo-400">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script>
+
+    <script src="js/login.js" type="module"></script>
+</body>
+</html>
